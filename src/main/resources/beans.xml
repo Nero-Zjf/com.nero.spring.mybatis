@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--配置数据源-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis?useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="basic"/>
+        <property name="password" value="000000"/>
+    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--如果存在多个Mapper，按照下面的方式配置不合适，此时采用MapperScannerConfigurer-->
+    <!--<bean class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+    <!--    <property name="mapperInterface" value="com.nero.spring.mybatis.mapper.CustomerMapper"/>-->
+    <!--    <property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
+    <!--<bean class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+    <!--    <property name="mapperInterface" value="com.nero.spring.mybatis.mapper.UserMapper"/>-->
+    <!--    <property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
+
+    <!--如果存在多个Mapper，此时采用MapperScannerConfigurer-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.nero.spring.mybatis.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+</beans>
